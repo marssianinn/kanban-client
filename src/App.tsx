@@ -1,26 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
+import BoardPage from './components/Board/BoardPage';
+import CreateBoard from './components/Board/CreateBoard';
+import PrivateRoute from './components/Layout/PrivateRoute';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => {
+    return (
+        <div className="App">
+            <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+
+                {/* Используем PrivateRoute как обертку для защищенных маршрутов */}
+                <Route element={<PrivateRoute />}>
+                    <Route path="/boards" element={<BoardPage />} />
+                    <Route path="/create-board" element={<CreateBoard />} />
+                </Route>
+
+                {/* Перенаправление на boards, если путь не найден */}
+                <Route path="*" element={<Navigate to="/boards" />} />
+            </Routes>
+        </div>
+    );
+};
 
 export default App;
